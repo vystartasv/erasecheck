@@ -1,0 +1,4 @@
+.hero-stamp{color:#596562}
+.console-line{min-width:0}
+.console-line span:last-child{min-width:0;overflow-wrap:anywhere}
+@media(max-width:440px){.hero-note{max-width:calc(100% - 20px);transform:none}.hero-stamp{transform:none}}

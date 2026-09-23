@@ -1,0 +1,8 @@
+{
+  "method": "1000 sequential runs; 3 in-memory stores; single process",
+  "iterations": 1000,
+  "elapsedMs": 4.12,
+  "runsPerSecond": 242934.6,
+  "millisecondsPerRun": 0.0041,
+  "node": "v22.22.2"
+}

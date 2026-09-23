@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2ec">
+  <meta name="description" content="A local integration test for deletion in agent apps. Plant a synthetic canary, run your erase path, and inspect the stores you choose.">
+  <title>EraseCheck — Test what deletion leaves behind</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="audit.css">
+  <script src="demo.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="#top" aria-label="EraseCheck home"><span class="mark" aria-hidden="true">e</span> EraseCheck</a><nav aria-label="Main navigation"><a href="#how">How it works</a><a href="#limits">Boundaries</a><a class="nav-cta" href="#start">Get started <span aria-hidden="true">↗</span></a></nav></header>
+  <main id="top">
+    <section class="hero wrap"><div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> LOCAL INTEGRATION TESTING</p><h1>When an agent forgets, <em>check its work.</em></h1><p class="lede">Plant a random synthetic canary, run your app’s deletion path, then inspect the stores you configure. No real user data needed.</p><div class="actions"><a class="button primary" href="#start">Try the demo <span aria-hidden="true">↓</span></a><a class="text-link" href="#how">See the method <span aria-hidden="true">→</span></a></div><p class="micro">Runs locally · The page makes no automatic network requests</p></div><aside class="hero-note"><span class="note-index">FIELD NOTE 01 / 03</span><p>Deletion is a path through your application. A test can make that path visible.</p><span class="note-rule"></span><small>One canary. Your configured stores. A result you can inspect.</small></aside><div class="hero-stamp" aria-hidden="true">ERASE<br>CHECK<br><span>EST. LOCAL</span></div></section>
+    <section class="demo-band" id="start"><div class="wrap demo-layout"><div class="demo-intro"><p class="eyebrow">A SMALL REHEARSAL</p><h2>See what a retained trace looks like.</h2><p>This demo uses three in-memory stores in your browser. Nothing is sent anywhere. Switch between an erase that clears all three and one that leaves a mark in vector memory.</p><div class="toggle-row"><button id="run-clean" class="button primary" type="button">Run full erase</button><button id="run-retained" class="button secondary" type="button">Retain vector canary</button></div></div><div class="console" role="region" aria-label="Interactive local demo"><div class="console-head"><span><i></i> LOCAL RUN</span><span id="run-state" aria-live="polite">READY</span></div><div class="console-body"><div class="console-line"><span class="prompt" aria-hidden="true">›</span><span id="canary">Waiting for a run…</span></div><div id="results" class="results" aria-live="polite" aria-atomic="false"><p class="placeholder">Your store findings will appear here.</p></div></div><div class="console-foot"><span>3 configured stores</span><span>synthetic data only</span></div></div></div></section>
+    <section class="section wrap" id="how"><div class="section-head"><p class="eyebrow">THE CHECK, IN ORDER</p><h2>Make forgetting testable.</h2><p>EraseCheck is a small harness around your own test environment. Your app owns the setup, deletion and inspection logic.</p></div><div class="steps"><article><span class="step-no">01</span><h3>Plant a canary</h3><p>A fresh random string is written through your normal test setup path. It contains no user data.</p></article><article><span class="step-no">02</span><h3>Call deletion</h3><p>Your adapter invokes the same application deletion callback your integration test is meant to exercise.</p></article><article><span class="step-no">03</span><h3>Inspect named stores</h3><p>Each configured store returns a validated clear/residue finding. Cleanup waits for every inspection to settle, even when one fails.</p></article></div><div class="source-note"><span class="source-mark" aria-hidden="true">↳</span><p><strong>Why draw this boundary?</strong> An application can inspect only the stores and deletion paths it controls and configures. Provider-internal storage and retention are outside this check.</p></div></section>
+    <section class="limits" id="limits"><div class="wrap limits-inner"><div><p class="eyebrow">SCOPE IS A FEATURE</p><h2>A check of your app.<br>Nothing broader.</h2></div><div class="limit-list"><p><span aria-hidden="true">—</span> It does not claim legal compliance.</p><p><span aria-hidden="true">—</span> It cannot verify provider-internal abuse logs.</p><p><span aria-hidden="true">—</span> It says nothing about stores you did not configure.</p><p><span aria-hidden="true">—</span> A passing run is evidence from one test environment, not a universal guarantee.</p></div></div></section>
+    <section class="quick wrap"><div class="quick-left"><p class="eyebrow">START WITH YOUR TEST ENVIRONMENT</p><h2>Three callbacks.<br>One useful check.</h2><p>Point EraseCheck at an adapter module. Use synthetic test data and test-scoped credentials. The required <code>test</code> environment prefix is a label check, not production protection. Adapter callbacks control their own network and data handling; the harness does not transmit the canary or report.</p></div><div class="quick-code"><div class="code-head"><span>adapter.mjs</span><span>ES MODULE</span></div><pre><code>export default {
+  environment: 'test-local',
+  adapter: {
+    setup: async ({ canary }) =&gt; seedTestData(canary),
+    erase: async ({ canary }) =&gt; deleteTestData(canary),
+    cleanup: async ({ canary }) =&gt; purgeTestData(canary)
+  },
+  stores: [
+    { name: 'primary-db', inspect: checkDatabase },
+    { name: 'vector-memory', inspect: checkIndex }
+  ]
+};</code></pre><p class="code-command">node src/cli.mjs run ./adapter.mjs</p></div></section>
+  </main>
+  <footer class="wrap footer"><a class="wordmark" href="#top"><span class="mark" aria-hidden="true">e</span> EraseCheck</a><p>A local test harness for the state your app controls.</p><span>No analytics · No automatic network requests</span></footer>
+</body>
+</html>

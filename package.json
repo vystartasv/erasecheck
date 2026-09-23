@@ -1,0 +1,16 @@
+{
+  "name": "erasecheck",
+  "version": "0.1.0",
+  "description": "Local integration tests for application-controlled data deletion in agent apps",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "bin": { "erasecheck": "./src/cli.mjs" },
+  "exports": "./src/index.mjs",
+  "scripts": {
+    "test": "node --test",
+    "typecheck": "node --check src/index.mjs && node --check src/cli.mjs && node --check demo/adapter.mjs && node --check demo/run.mjs",
+    "build": "npm run typecheck",
+    "benchmark": "node scripts/benchmark.mjs"
+  }
+}
